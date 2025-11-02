@@ -9,15 +9,20 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
     'LXFOPVEFRNHR'
     """
     ciphertext = ""
+    alphabet_size = 26  # количество символов в английском алфавите
+    A_num = ord("A")
+    a_num = ord("a")
     keyword = keyword.upper()
     for i, char in enumerate(plaintext):
         if char.isalpha():
             key_char = keyword[i % len(keyword)]
-            shift = ord(key_char) - ord("A")
+            shift = ord(key_char) - A_num
             if char.isupper():
-                ciphertext += chr((ord(char) - ord("A") + shift) % 26 + ord("A"))
+                size = A_num
             else:
-                ciphertext += chr((ord(char) - ord("a") + shift) % 26 + ord("a"))
+                size = a_num
+            position = (ord(char) - size + shift) % alphabet_size
+            ciphertext += chr(size + position)
         else:
             ciphertext += char
     return ciphertext
@@ -34,15 +39,20 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
     'ATTACKATDAWN'
     """
     plaintext = ""
+    alphabet_size = 26  # количество символов в английском алфавите
     keyword = keyword.upper()
+    A_num = ord("A")
+    a_num = ord("a")
     for i, char in enumerate(ciphertext):
         if char.isalpha():
             key_char = keyword[i % len(keyword)]
-            shift = ord(key_char) - ord("A")
+            shift = ord(key_char) - A_num
             if char.isupper():
-                plaintext += chr((ord(char) - ord("A") - shift) % 26 + ord("A"))
+                size = A_num
             else:
-                plaintext += chr((ord(char) - ord("a") - shift) % 26 + ord("a"))
+                size = a_num
+            position = (ord(char) - size - shift) % alphabet_size
+            plaintext += chr(size + position)
         else:
             plaintext += char
     return plaintext
