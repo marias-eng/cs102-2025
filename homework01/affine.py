@@ -6,7 +6,8 @@ def encrypt_affine(plaintext: str, a: int, b: int) -> str:
     rus_alphabet_size = 32  # количество символов в русском алфавите без учета буквы ё
     a_num = ord("а")
     A_num = ord("А")
-    for char in plaintext:
+    text_to_encrypt = plaintext.replace("Ё", "Е").replace("ё", "е")
+    for char in text_to_encrypt:
         if "А" <= char <= "Я":
             size = A_num
         elif "а" <= char <= "я":
