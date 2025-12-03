@@ -190,9 +190,9 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
         return empty
     remove = 81 - N  # 81-количество ячеек в судоку
     if remove <= 0:
-        return solving
-    if remove >= 81:
         return empty
+    if remove >= 81:
+        return solving
     pos = [(i, j) for i in range(9) for j in range(9)]
     random.shuffle(pos)
     for i in range(remove):
