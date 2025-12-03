@@ -197,8 +197,8 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     random.shuffle(pos)
     for i in range(remove):
         row, col = pos[i]
-        grid[row][col] = "."
-    return grid
+        solving[row][col] = "."
+    return solving
 
 
 if __name__ == "__main__":
