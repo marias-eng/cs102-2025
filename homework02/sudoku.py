@@ -113,9 +113,9 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     True
     """
     possible_values = set()
-    getin_row==get_row(grid, pos)
-    getin_col==get_col(grid, pos)
-    getin_block==get_block(grid, pos
+    getin_row = get_row(grid, pos)
+    getin_col = get_col(grid, pos)
+    getin_block = get_block(grid, pos)
     for val in "123456789":
         if val not in getin_row and val not in getin_col and val not in getin_block:
             possible_values.add(val)
@@ -150,7 +150,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     correct_num = set("123456789")
-     for i in range(9):
+    for i in range(9):
         row_set = set(get_row(solution, (i, 0)))
         col_set = set(get_col(solution, (0, i)))
         if row_set != correct_num or col_set != correct_num:
