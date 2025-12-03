@@ -113,8 +113,11 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     True
     """
     possible_values = set()
+    getin_row==get_row(grid, pos)
+    getin_col==get_col(grid, pos)
+    getin_block==get_block(grid, pos
     for val in "123456789":
-        if val not in get_row(grid, pos) and val not in get_col(grid, pos) and val not in get_block(grid, pos):
+        if val not in getin_row and val not in getin_col and val not in getin_block:
             possible_values.add(val)
     return possible_values
 
