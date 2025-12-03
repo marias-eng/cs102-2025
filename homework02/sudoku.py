@@ -189,7 +189,7 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     positions = [(x, y) for x in range(9) for y in range(9)]
     random.shuffle(positions)
     remove = 81 - N  # 81-количество ячеек в судоку
-    for i in remove:
+    for i in range(remove):
         x, y = positions[i]
         generated_sudoku[x][y] = "."
     return generated_sudoku
