@@ -113,8 +113,11 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     True
     """
     possible_values = set()
+    getin_row==get_row(grid, pos)
+    getin_col==get_col(grid, pos)
+    getin_block==get_block(grid, pos
     for val in "123456789":
-        if val not in get_row(grid, pos) and val not in get_col(grid, pos) and val not in get_block(grid, pos):
+        if val not in getin_row and val not in getin_col and val not in getin_block:
             possible_values.add(val)
     return possible_values
 
@@ -132,13 +135,13 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
     empty_pos = find_empty_positions(grid)
-    if empty_pos is None:
+    if not empty_pos:
         return grid
     possible_val = find_possible_values(grid, empty_pos)
     for val in possible_val:
         grid[empty_pos[0]][empty_pos[1]] = val
         trying = solve(grid)
-        if trying is not None:
+        if trying:
             return trying
         grid[empty_pos[0]][empty_pos[1]] = "."
     return None
@@ -147,13 +150,15 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """Если решение solution верно, то вернуть True, в противном случае False"""
     correct_num = set("123456789")
-    for i in range(9):
-        for j in range(9):
-            position = i, j
-            row = get_row(solution, position)
-            col = get_col(solution, position)
-            block = get_block(solution, position)
-            if set(row) != correct_num or set(col) != correct_num or set(block) != correct_num:
+     for i in range(9):
+        row_set = set(get_row(solution, (i, 0)))
+        col_set = set(get_col(solution, (0, i)))
+        if row_set != correct_num or col_set != correct_num:
+            return False
+    for i in (0, 3, 6):
+        for j in (0, 3, 6):
+            block_set = set(get_block(solution, (i, j)))
+            if block_set != correct_num:
                 return False
     return True
 
@@ -180,12 +185,9 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     True
     """
     empty = [["." for i in range(9)] for j in range(9)]
-    if N == 0:
-        return empty
     solving = solve(empty)
     if not solving:
         return empty
-    grid = copy.deepcopy(solving)
     remove = 81 - N  # 81-количество ячеек в судоку
     if remove <= 0:
         return grid
