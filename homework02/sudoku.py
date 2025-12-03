@@ -184,21 +184,15 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> check_solution(solution)
     True
     """
-    empty = [["." for i in range(9)] for j in range(9)]
-    solving = solve(empty)
-    if not solving:
-        return empty
+    generated_sudoku = [["." for _ in range(9)] for _ in range(9)]
+    solve(generated_sudoku)
+    positions = [(x, y) for x in range(9) for y in range(9)]
+    random.shuffle(positions)
     remove = 81 - N  # 81-количество ячеек в судоку
-    if remove <= 0:
-        return empty
-    if remove >= 81:
-        return solving
-    pos = [(i, j) for i in range(9) for j in range(9)]
-    random.shuffle(pos)
-    for i in range(remove):
-        row, col = pos[i]
-        solving[row][col] = "."
-    return solving
+    for i in remove:
+        x, y = positions[i]
+        generated_sudoku[x][y] = "."
+    return generated_sudoku
 
 
 if __name__ == "__main__":
