@@ -2,7 +2,6 @@ import pathlib
 import random
 import typing as tp
 
-
 Cell = tp.Tuple[int, int]
 Grid = tp.List[tp.List[int]]
 
