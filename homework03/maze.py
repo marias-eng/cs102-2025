@@ -60,8 +60,8 @@ def bin_tree_maze(rows: int = 15, cols: int = 15, random_exit: bool = True) -> L
     # генерация входа и выхода
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
-        y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
-        y_out = randint(0, cols - 1) if x_out in (0, rows - 1) else choice((0, cols - 1))
+        y_in = randint(0, cols - 1) if x_in in {0, rows - 1} else choice((0, cols - 1))
+        y_out = randint(0, cols - 1) if x_out in {0, rows - 1} else choice((0, cols - 1))
     else:
         x_in, y_in = 0, cols - 2
         x_out, y_out = rows - 1, 1
@@ -78,9 +78,9 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :return:
     """
     exits = []
-    for x in range(len(grid)):
-        for y in range(len(grid[x])):
-            if grid[x][y] == "X":
+    for x, row in enumerate(grid):
+        for y, cell in enumerate(row):
+            if cell == "X":
                 exits.append((x, y))
                 if len(exits) == 2:
                     return exits
@@ -118,11 +118,15 @@ def shortest_path(
     """
     number_rows = len(grid)
     number_cols = len(grid[0])
-
     x, y = exit_coord
-    k = int(grid[x][y])
+    start_value = grid[x][y]
+    if isinstance(start_value, str):
+        return None
+    k = start_value
     path = [(x, y)]
-    while grid[x][y] != 1:
+    if start_value == 1:
+        return path
+    while True:
         k -= 1
         if k < 1:
             break
@@ -145,7 +149,7 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     number_rows = len(grid)
     number_cols = len(grid[0])
     x, y = coord
-    if (x == 0 or x == number_rows - 1) and (y == 0 or y == number_cols - 1):
+    if (x in {0, number_rows - 1}) and (y in {0, number_cols - 1}):
         return True
     if x == 0 and grid[x + 1][y] != " ":
         return True
@@ -173,9 +177,9 @@ def solve_maze(
     for possible_exit in exits:
         if encircled_exit(grid, possible_exit):
             return grid, None
-    for x in range(len(grid)):
-        for y in range(len(grid[0])):
-            if grid[x][y] == " ":
+    for x, row in enumerate(grid):
+        for y, cell in enumerate(row):
+            if cell == " ":
                 grid[x][y] = 0
     x_enter, y_enter = exits[0]
     grid[x_enter][y_enter] = 1
